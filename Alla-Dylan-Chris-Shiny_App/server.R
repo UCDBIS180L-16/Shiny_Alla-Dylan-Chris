@@ -1,4 +1,20 @@
 # Define server logic required to draw a boxplot
+
+# Install Required Packages
+# http://stackoverflow.com/questions/4090169/elegant-way-to-check-for-missing-packages-and-install-them
+list.of.packages <- c("ggplot2")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+
+# Load required Libraries
+library(shiny)
+library(ggplot2)
+
+# Load UI and Server
+if(!exists("ui")) source("ui.R")
+if(!exists("server")) source("server.R")
+
+
 server <- shinyServer(function(input, output) {
 
     # Expression that generates a boxplot. The expression is
