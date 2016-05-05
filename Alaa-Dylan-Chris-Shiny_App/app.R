@@ -1,6 +1,6 @@
 #
 # This is a Shiny web application.
-# Alla, Dylan, Chris
+# Alaa, Dylan, Chris
 
 # Load UI and Server
 if(!exists("ui")) source("ui.R")
