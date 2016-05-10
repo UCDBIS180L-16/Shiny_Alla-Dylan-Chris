@@ -1,52 +1,39 @@
 library(shiny)
 library(ggplot2)
+library(PSMix)
 
-# Define server logic required to draw a boxplot
 shinyServer(function(input, output) {
-  
-  # Expression that generates a boxplot. The expression is
-  # wrapped in a call to renderPlot to indicate that:
-  #
-  #  1) It is "reactive" and therefore should re-execute automatically
-  #     when inputs change
-  #  2) Its output type is a plot
-  output$boxplot <- renderPlot({
-    
+  output$plot <- renderPlot({
     ShinyData <- read.csv("ShinyData.csv")
-    
-    # set up the plot
-    pl <- ggplot(data=ShinyData,
-                 #Use aes_string below so that input$trait is interpreted
-                 #correctly.  The other variables need to be quoted
-                 aes_string(x="Region",
-                            y=input$trait,
-                            fill="Region")
-                 )
-    # draw the boxplot for the specified trait
-    pl + geom_boxplot()
+
+    create_plot <- function(data, x, y, type) {
+        if (type == "Boxplot") {
+            return(ggplot(data=ShinyData, aes_string(x = x, y = y, fill="Region")) + geom_boxplot())
+        } else if (type == "Violin") {
+            return(ggplot(data=ShinyData, aes_string(x = x, y = y, fill="Region")) + geom_violin())
+        } else if (type == "Dot Plot") {
+            return(ggplot(data=ShinyData, aes(V1, V2, color=get(y))) + geom_point())
+        }
+    }
+
+
+    trait <- function(input_trait) {
+        if (input_trait == "Amylose Content") {
+            return("Amylose.content")
+        } else if (input_trait == "Aluminum Tolerance") {
+            return("Alu.Tol")
+        } else if (input_trait == "Protein Content") {
+            return("Protein.content")
+        } else if (input_trait == "Seed Length") {
+            return("Seed.length")
+        } else if (input_trait == "Plant Height") {
+            return("Plant.height")
+        }
+    }
+
+    p <- create_plot(ShinyData, "Region", trait(input$trait), input$type)
+    p <- p + ggtitle(sprintf("Region vs %s", input$trait)) + xlab("Region") + ylab(sprintf("%s", input$trait))
+    print(p)
    })
-  
- output$violin <- renderPlot({
-   ShinyData <- read.csv("ShinyData.csv")
-    # set up the plot
-   pl2 <- ggplot(data=ShinyData,
-                #Use aes_string below so that input$trait is interpreted
-                #correctly.  The other variables need to be quoted
-               aes_string(x="Region",
-                          y=input$trait,
-                          fill="Region"
-                )
-   )
-    # draw the violin for the specified trait
-   pl2 + geom_violin()
-  })
- 
-output$dotplot <- renderPlot({
-  ShinyData <- read.csv("ShinyData.csv")
-  # set up the plot
-  pl3 <-ggplot(data=ShinyData, aes(V1,V2,color=input$trait)) + geom_point() 
-                
-  # draw the dot plot for the specified trait
-  pl3
-  })
+
 })
