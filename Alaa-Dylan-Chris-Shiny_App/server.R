@@ -28,20 +28,6 @@ shinyServer(function(input, output) {
     pl + geom_boxplot()
    })
   
-  output$histogram <- renderPlot({
-    
-    ShinyData <- read.csv("ShinyData.csv")
-    
-    qplot(x=Amylose.content,data=ShinyData,geom="histogram")
-    
-    pl <- ggplot(data=data.pheno.mds,aes(x=Amylose.content)) #create the basic plot object
-    pl <- pl + geom_histogram(binwidth=3) #tell R that we want a histogram, with binwidth of 3
-    pl <- pl + facet_wrap(facets= ~ Region, ncol=3) # a separate plot ("facet") for each region, arranged in 3 columns
-    pl <- pl + ggtitle("Amylose Content") #add a title
-    pl #display the plot
-  
- })
-  
  output$violin <- renderPlot({
    ShinyData <- read.csv("ShinyData.csv")
     # set up the plot

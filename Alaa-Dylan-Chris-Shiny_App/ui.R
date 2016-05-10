@@ -21,14 +21,12 @@ shinyUI(fluidPage( #create the overall page
                      "Protein.content")),
       radioButtons("Plot type", 
                    "choose the desired plot:",
-                   c("histogram",
-                     "boxplot",
+                   c("boxplot",
                      "violin"))
     ),
     # Show a plot of the generated distribution
-    mainPanel(plotOutput("boxplot"),
-               plotOutput("violin"),
-               plotOutput("histogram")
+    mainPanel(plotOutput("violin"),
+              plotOutput("boxplot")
     )
   )
 ))
