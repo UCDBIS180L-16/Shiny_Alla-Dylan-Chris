@@ -31,16 +31,14 @@ shinyServer(function(input, output) {
   output$histogram <- renderPlot({
     
     ShinyData <- read.csv("ShinyData.csv")
-    pl2 <- ggplot(data=ShinyData,aes_string(x="Region",
-                                                 y=input$trait, 
-                                                fill="Region"))
-                  #Use aes_string below so that input$trait is interpreted
-                  #correctly.  The other variables need to be quoted
-    # set up the plot
-   pl2 <- pl2 + geom_histogram(binwidth=3) #tell R that we want a histogram, with binwidth of 3
-   pl2 <- pl2 + facet_wrap(facets= ~ Region, ncol=3) # a separate plot ("facet") for each region, arranged in 3 columns
-   pl2 <- pl2 + ggtitle("Amylose Content") #add a title
-   pl2 #display the plot
+    
+    qplot(x=Amylose.content,data=ShinyData,geom="histogram")
+    
+    pl <- ggplot(data=data.pheno.mds,aes(x=Amylose.content)) #create the basic plot object
+    pl <- pl + geom_histogram(binwidth=3) #tell R that we want a histogram, with binwidth of 3
+    pl <- pl + facet_wrap(facets= ~ Region, ncol=3) # a separate plot ("facet") for each region, arranged in 3 columns
+    pl <- pl + ggtitle("Amylose Content") #add a title
+    pl #display the plot
   
  })
   

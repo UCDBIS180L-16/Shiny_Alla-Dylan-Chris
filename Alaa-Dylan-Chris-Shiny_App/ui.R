@@ -27,8 +27,8 @@ shinyUI(fluidPage( #create the overall page
     ),
     # Show a plot of the generated distribution
     mainPanel(plotOutput("boxplot"),
-               plotOutput("histogram"),
-               plotOutput("violin")
+               plotOutput("violin"),
+               plotOutput("histogram")
     )
   )
 ))
