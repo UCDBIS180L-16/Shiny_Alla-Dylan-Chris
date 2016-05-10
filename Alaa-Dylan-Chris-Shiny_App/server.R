@@ -10,7 +10,6 @@ shinyServer(function(input, output) {
   #  1) It is "reactive" and therefore should re-execute automatically
   #     when inputs change
   #  2) Its output type is a plot
-
   output$boxplot <- renderPlot({
     
     ShinyData <- read.csv("ShinyData.csv")
@@ -21,9 +20,8 @@ shinyServer(function(input, output) {
                  #correctly.  The other variables need to be quoted
                  aes_string(x="Region",
                             y=input$trait,
-                            fill="Region"
+                            fill="Region")
                  )
-    )
     # draw the boxplot for the specified trait
     pl + geom_boxplot()
    })
@@ -31,7 +29,7 @@ shinyServer(function(input, output) {
  output$violin <- renderPlot({
    ShinyData <- read.csv("ShinyData.csv")
     # set up the plot
-   pl3 <- ggplot(data=ShinyData,
+   pl2 <- ggplot(data=ShinyData,
                 #Use aes_string below so that input$trait is interpreted
                 #correctly.  The other variables need to be quoted
                aes_string(x="Region",
@@ -39,8 +37,16 @@ shinyServer(function(input, output) {
                           fill="Region"
                 )
    )
-    # draw the boxplot for the specified trait
-   pl3 + geom_violin()
+    # draw the violin for the specified trait
+   pl2 + geom_violin()
+  })
+ 
+output$dotplot <- renderPlot({
+  ShinyData <- read.csv("ShinyData.csv")
+  # set up the plot
+  pl3 <-ggplot(data=ShinyData, aes(V1,V2,color=input$trait)) + geom_point() 
+                
+  # draw the dot plot for the specified trait
+  pl3
   })
 })
-

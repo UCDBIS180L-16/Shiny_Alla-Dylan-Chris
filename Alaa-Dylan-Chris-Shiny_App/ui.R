@@ -18,15 +18,18 @@ shinyUI(fluidPage( #create the overall page
                    "Choose a trait to display:",
                    c("Amylose.content",
                      "Alu.Tol",
-                     "Protein.content")),
-      radioButtons("Plot type", 
+                     "Protein.content",
+                     "Seed.length",
+                     "Plant.height"
+                     )),
+      radioButtons("Plottype", 
                    "Choose your desired plot:",
                    c("boxplot",
-                     "violin"))
+                     "violin"),
+                    "dotplot")
     ),
     # Show a plot of the generated distribution
-    mainPanel(plotOutput("violin"),
-              plotOutput("boxplot")
-    )
-  )
-))
+    mainPanel(plotOutput("boxplot"),
+              plotOutput("violin"),
+              plotOutput("dotplot"))
+)))
