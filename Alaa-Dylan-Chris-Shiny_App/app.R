@@ -20,7 +20,10 @@ if(!exists("server")) source("server.R")
 library(shiny)
 
 # Define UI for application that draws a histogram
-ui <- shinyUI(fluidPage( #create the overall page
+ui <- library(shiny)
+
+# Define UI for application that draws a histogram
+shinyUI(fluidPage( #create the overall page
   
   # Application title
   titlePanel("RICE SNP DATA"),
@@ -37,23 +40,27 @@ ui <- shinyUI(fluidPage( #create the overall page
                    "Choose a trait to display:",
                    c("Amylose.content",
                      "Alu.Tol",
-                     "Protein.content")),
-      radioButtons("Plot type", 
-                   "choose the desired plot:",
-                   c("histogram",
-                     "boxplot",
-                     "violin")),
-      
-      # Show a plot of the generated distribution
-      mainPanel(plotOutput("histogram"),
-                plotOutput("boxplot"),
-                plotOutput("violin")
-      )
+                     "Protein.content"))
+      #   radioButtons("Plot type", 
+      #               "choose the desired plot:",
+      #              c("histogram",
+      #               "boxplot",
+      #              "violin")),
+    ),
+    # Show a plot of the generated distribution
+    mainPanel(plotOutput("boxplot")
+              #       plotOutput("histogram"),
+              #      plotOutput("violin")
     )
-  )))
+  )
+))
 
 # Define server logic required to draw a histogram
-server <- shinyServer(function(input, output) {
+library(shiny)
+library(ggplot2)
+
+# Define server logic required to draw a boxplot
+server<-shinyServer(function(input, output) {
   
   # Expression that generates a boxplot. The expression is
   # wrapped in a call to renderPlot to indicate that:
@@ -111,37 +118,39 @@ server <- shinyServer(function(input, output) {
     # draw the boxplot for the specified trait
     pl + geom_boxplot()
   })
-  
-  output$histogram <- renderPlot({
-    pl2 <- ggplot(data=data.pheno.mds,aes_string(x="Amylose.content",
-                                                 y=input$Amylose.content, 
-                                                 fill="Region"))
-    #Use aes_string below so that input$trait is interpreted
-    #correctly.  The other variables need to be quoted
-    # set up the plot
-    pl2 <- pl2 + geom_histogram(binwidth=3) #tell R that we want a histogram, with binwidth of 3
-    pl2 <- pl2 + facet_wrap(facets= ~ Region, ncol=3) # a separate plot ("facet") for each region, arranged in 3 columns
-    pl2 <- pl2 + ggtitle("Amylose Content") #add a title
-    pl2 #display the plot
-    
-  })
-  
-  output$violin <- renderPlot({
-    
-    # set up the plot
-    pl3 <- qplot(data=data.pheno.mds,
-                 #Use aes_string below so that input$trait is interpreted
-                 #correctly.  The other variables need to be quoted
-                 aes_string(x="Amylose.content",
-                            y=input$Amylose.content,
-                            fill="Region"
-                 )
-    )
-    # draw the boxplot for the specified trait
-    pl3 + geom_violin()
-  })
-  
 })
+
+#output$histogram <- renderPlot({
+# pl2 <- ggplot(data=data.pheno.mds,aes_string(x="Amylose.content",
+#                                             y=input$Amylose.content, 
+#                                            fill="Region"))
+#Use aes_string below so that input$trait is interpreted
+#correctly.  The other variables need to be quoted
+# set up the plot
+#    pl2 <- pl2 + geom_histogram(binwidth=3) #tell R that we want a histogram, with binwidth of 3
+#    pl2 <- pl2 + facet_wrap(facets= ~ Region, ncol=3) # a separate plot ("facet") for each region, arranged in 3 columns
+#    pl2 <- pl2 + ggtitle("Amylose Content") #add a title
+#    pl2 #display the plot
+
+#  })
+
+#  output$violin <- renderPlot({
+
+# set up the plot
+#    pl3 <- qplot(data=data.pheno.mds,
+#Use aes_string below so that input$trait is interpreted
+#correctly.  The other variables need to be quoted
+#                aes_string(x="Amylose.content",
+#                           y=input$Amylose.content,
+#                           fill="Region"
+#                )
+#    )
+# draw the boxplot for the specified trait
+#    pl3 + geom_violin()
+#  })
+
+
+
 
 # Run the application
 shinyApp(ui = ui, server = server)
