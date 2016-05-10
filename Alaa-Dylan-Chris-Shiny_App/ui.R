@@ -7,8 +7,8 @@ shinyUI(fluidPage( #create the overall page
   titlePanel("RICE SNP DATA"),
   
   # Some helpful information
-  helpText("This application creates a different plots  to show difference between",
-           "rice plants across different regions.  Please use the radio box below to choose a trait",
+  helpText("This application creates different plots  to show differences in traits of",
+           "rice plants across different regions. Please use the radio box below to choose a trait",
            "for plotting"),
   
   # Sidebar with a radio box to input which trait will be plotted
@@ -20,7 +20,7 @@ shinyUI(fluidPage( #create the overall page
                      "Alu.Tol",
                      "Protein.content")),
       radioButtons("Plot type", 
-                   "choose the desired plot:",
+                   "Choose your desired plot:",
                    c("boxplot",
                      "violin"))
     ),
